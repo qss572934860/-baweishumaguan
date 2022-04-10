@@ -1,0 +1,114 @@
+C51 COMPILER V9.03   EX10                                                                  04/10/2022 10:03:42 PAGE 1   
+
+
+C51 COMPILER V9.03, COMPILATION OF MODULE EX10
+OBJECT MODULE PLACED IN ex10.OBJ
+COMPILER INVOKED BY: D:\MDK5\C51\BIN\C51.EXE ex10.c OPTIMIZE(8,SPEED) BROWSE NOAREGS DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          //任务10    制作用数码管显示的秒表(数码管动态扫描显示)
+   2          #include  <reg51.h>       //1 将特殊功能寄存器定义文件reg51.h包含进来
+   3          #define DCOUNT  8         //2 宏定义：DCOUNT代表常数2(数码管的个数)
+   4          #define portled_S   P0      //3 宏定义：portled_S代表P1(数码管的段选口)
+   5          #define portled_B   P2      //4 宏定义：portled_B代表P2(数码管的位选口)
+   6          #define uchar unsigned  char  //5 宏定义：uchar代表unsigned char
+   7          uchar data  wcnt,timcnt,second,minute,hour; //6 在data区定义全局变量wcnt、timcnt、second
+   8          uchar code  led[]={0x3f,0x06,0x5b,  //7 在code区建立数码管的笔型码表led
+   9          0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};  //8 笔型码表续(C51的语句可以分多行书写)
+  10          uchar code  ledctrl[]={0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe};//9 在code区建立数码管的显示控制码表
+  11          void  display(uchar,uchar,uchar);       //10 display函数说明
+  12          void  main(void)          //11 main函数
+  13          { second=0;           //12 软件初始化：秒计数器赋初值0
+  14   1        timcnt=0;           //13 10ms中断次数计数器赋初值0
+  15   1        wcnt=0;             //14 数码管显示位置计数器赋初值0
+  16   1        TMOD=0x10;            //15 设置T1的运行模式(定时)、工作方式(方式1)
+  17   1        TL1=(65536-9216)%256;     //16 T1的计数器赋初值：10ms
+  18   1        TH1=(65536-9216)/256;     //17
+  19   1        ET1=1;              //18 开T1中断
+  20   1        EA=1;             //19 开全局中断
+  21   1        TR1=1;              //20 启动T1
+  22   1        while(1)            //21 死循环，语句22为循环体
+  23   1        {
+  24   2        display(second,minute,hour);        //33 调用display函数显示秒计数值    
+  25   2        
+  26   2        }     //22 睡眠CPU
+  27   1      }                 //23 main函数结束
+  28          //--------定时中断T1服务程序---------
+  29          void  tim1()  interrupt 3 using 2 //24 T1中断服务函数，中断号为3
+  30          { TL1=(65536-9216)%256;     //25 重置计数初值:10ms
+  31   1        TH1=(65536-9216)/256;     //26
+  32   1        timcnt++;           //27 10ms中断次数计数值加1
+  33   1        if(timcnt>=100)         //28 计满1秒吗？
+  34   1        { timcnt=0;         //29 满1秒，10ms中断次数计数值回0
+  35   2          second++;         //30 秒计数加1
+  36   2          if(second>=60)  
+  37   2          {
+  38   3            second=0; //31 若计满1分，则秒计数回0
+  39   3            minute++;
+  40   3            if(minute>=60)
+  41   3            {
+  42   4              minute=0;
+  43   4              hour++;
+  44   4              if(hour>=24)
+  45   4                hour=0;
+  46   4            }
+  47   3          }
+  48   2        }               //32 计满1秒处理结束
+  49   1        
+  50   1      }                 //34 中断服务函数结束
+  51          //-------------显示子程序------------
+  52          void  display(uchar second,uchar minute,uchar hour)   //35 display函数
+  53          { portled_S=0;          //36段选口消隐输出
+  54   1        portled_B=ledctrl[wcnt];    //37查表获点亮当前数码管的控制码
+  55   1        switch(wcnt)          //38查询当前点亮数码管的编号
+C51 COMPILER V9.03   EX10                                                                  04/10/2022 10:03:42 PAGE 2   
+
+  56   1        {case 0:            //39是0号管
+  57   2          portled_S=led[second%10];   //40段选口输出秒的个位笔型码(显示秒个位)
+  58   2          break;            //41结束switch语句
+  59   2        case  1:            //42是1号管
+  60   2          portled_S=led[second/10];   //43段选口输出秒的十位笔型码(显示秒十位)
+  61   2          break;
+  62   2        case  2:
+  63   2          portled_S=0x40;
+  64   2          break;
+  65   2        case 3:
+  66   2          portled_S=led[minute%10];   
+  67   2          break;
+  68   2        case 4:
+  69   2          portled_S=led[minute/10]; 
+  70   2          break;  
+  71   2        case  5:
+  72   2          portled_S=0x40;
+  73   2          break;
+  74   2        case  6:
+  75   2          portled_S=led[hour%10]; 
+  76   2          break;
+  77   2        case  7:
+  78   2          portled_S=led[hour/10]; 
+  79   2          break;
+  80   2          
+  81   2        }               //44 switch语句结束
+  82   1        wcnt++;             //45 位置计数值加1
+  83   1        wcnt=wcnt%DCOUNT;       //46 超界处理
+  84   1      }                 //47 中断服务函数结束
+  85          //--------------------------------------------------------
+  86          //显示函数放在主函数中,减少中断所需时间
+  87          
+  88          
+  89          ////计数器达到模值时计数值归0  标志位置1 挂入中断标志位置0  计数赋初值继续计数
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    186    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,170 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/10/2022  10:03:42  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\MDK5\C51\BIN\BL51.EXE ex10.obj TO ex10 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ex10.obj (EX10)
+  D:\MDK5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  ex10 (EX10)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0005H     UNIT         ?DT?EX10
+            IDATA   000DH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0018H                  *** GAP ***
+            CODE    001BH     0003H     ABSOLUTE     
+                    001EH     07E2H                  *** GAP ***
+            CODE    0800H     005EH     UNIT         ?PR?_DISPLAY?EX10
+            CODE    085EH     003CH     UNIT         ?PR?TIM1?EX10
+            CODE    089AH     0020H     UNIT         ?PR?MAIN?EX10
+            CODE    08BAH     0012H     UNIT         ?CO?EX10
+            CODE    08CCH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex10 (EX10)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?EX10
+
+?PR?MAIN?EX10
+  +--> ?PR?_DISPLAY?EX10
+
+?PR?_DISPLAY?EX10
+  +--> ?CO?EX10
+
+
+
+SYMBOL TABLE OF MODULE:  ex10 (EX10)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2022  10:03:42  PAGE 2
+
+
+  -------         MODULE        EX10
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0008H         PUBLIC        second
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  B:00A8H.7       PUBLIC        EA
+  D:0009H         PUBLIC        timcnt
+  D:000AH         PUBLIC        minute
+  C:089AH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  C:08BAH         PUBLIC        led
+  D:000BH         PUBLIC        wcnt
+  D:000CH         PUBLIC        hour
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  C:08C4H         PUBLIC        ledctrl
+  C:0800H         PUBLIC        _display
+  C:085EH         PUBLIC        tim1
+  -------         PROC          MAIN
+  C:089AH         LINE#         12
+  C:089AH         LINE#         13
+  C:089DH         LINE#         14
+  C:089FH         LINE#         15
+  C:08A1H         LINE#         16
+  C:08A4H         LINE#         17
+  C:08A6H         LINE#         18
+  C:08A9H         LINE#         19
+  C:08ABH         LINE#         20
+  C:08ADH         LINE#         21
+  C:08AFH         LINE#         22
+  C:08AFH         LINE#         23
+  C:08AFH         LINE#         24
+  C:08B8H         LINE#         26
+  -------         ENDPROC       MAIN
+  -------         PROC          TIM1
+  C:085EH         LINE#         29
+  C:0862H         LINE#         30
+  C:0865H         LINE#         31
+  C:0868H         LINE#         32
+  C:086AH         LINE#         33
+  C:0871H         LINE#         34
+  C:0874H         LINE#         35
+  C:0876H         LINE#         36
+  C:087CH         LINE#         37
+  C:087CH         LINE#         38
+  C:087FH         LINE#         39
+  C:0881H         LINE#         40
+  C:0887H         LINE#         41
+  C:0887H         LINE#         42
+  C:088AH         LINE#         43
+  C:088CH         LINE#         44
+  C:0892H         LINE#         45
+  C:0895H         LINE#         46
+  C:0895H         LINE#         47
+  C:0895H         LINE#         48
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2022  10:03:42  PAGE 3
+
+
+  C:0895H         LINE#         50
+  -------         ENDPROC       TIM1
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        second
+  D:0005H         SYMBOL        minute
+  D:0003H         SYMBOL        hour
+  C:0800H         LINE#         52
+  C:0800H         LINE#         53
+  C:0803H         LINE#         54
+  C:080BH         LINE#         55
+  C:0831H         LINE#         56
+  C:0831H         LINE#         57
+  C:0832H         LINE#         58
+  C:0834H         LINE#         59
+  C:0834H         LINE#         60
+  C:0835H         LINE#         61
+  C:0837H         LINE#         62
+  C:0837H         LINE#         63
+  C:0837H         LINE#         64
+  C:0839H         LINE#         65
+  C:0839H         LINE#         66
+  C:083AH         LINE#         67
+  C:083CH         LINE#         68
+  C:083CH         LINE#         69
+  C:083DH         LINE#         70
+  C:083FH         LINE#         71
+  C:0842H         LINE#         73
+  C:0844H         LINE#         74
+  C:0844H         LINE#         75
+  C:084BH         LINE#         76
+  C:084DH         LINE#         77
+  C:084DH         LINE#         78
+  C:0858H         LINE#         79
+  C:0858H         LINE#         81
+  C:0858H         LINE#         82
+  C:085AH         LINE#         83
+  C:085DH         LINE#         84
+  -------         ENDPROC       _DISPLAY
+  -------         ENDMOD        EX10
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00CFH BYTE (10%) *
+******************************************************************************
+
+Program Size: data=14.0 xdata=0 code=222
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
